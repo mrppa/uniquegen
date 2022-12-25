@@ -1,0 +1,41 @@
+
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+group = 'com.mrppa.uniquegen'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    archiveBaseName = 'uniquegen'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "uniquegen"
+            url = uri("https://maven.pkg.github.com/mrppa/uniquegen")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
