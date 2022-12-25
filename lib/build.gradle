@@ -1,0 +1,37 @@
+
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+apply plugin: 'maven-publish'
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.mrppa'
+            artifactId = 'uniquegen'
+            version = "0.1-SNAPSHOT"
+            from components.java
+
+            pom {
+                name = 'Unique Id Generator'
+                description = 'An unique id generation library'
+            }
+        }
+    }
+}
+
