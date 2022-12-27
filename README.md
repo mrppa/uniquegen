@@ -21,7 +21,7 @@ dependencies {
 ```
 
 Maven and more
-https://jitpack.io/#mrppa/uniquegen/0.1.2
+[![](https://jitpack.io/v/mrppa/uniquegen.svg)](https://jitpack.io/#mrppa/uniquegen)
 
 ```Version``` - Refer to releases for the latest version. https://github.com/mrppa/uniquegen/releases
 
