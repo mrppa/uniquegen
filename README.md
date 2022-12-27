@@ -1,7 +1,27 @@
 # uniquegen
 Java based unique ID Generator
 
-## How to install
+## How to install with Gradle
+
+### Using jitpack
+
+```
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+```
+dependencies {
+    implementation 'com.github.mrppa:uniquegen:0.1.2'
+}
+```
+
+Maven and more
+https://jitpack.io/#mrppa/uniquegen/0.1.2
 
 
 ## Usage
