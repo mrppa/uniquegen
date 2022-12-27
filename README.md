@@ -16,13 +16,14 @@ allprojects {
 
 ```
 dependencies {
-    implementation 'com.github.mrppa:uniquegen:0.1.2'
+    implementation 'com.github.mrppa:uniquegen:<Version>'
 }
 ```
 
 Maven and more
 https://jitpack.io/#mrppa/uniquegen/0.1.2
 
+```Version``` - Refer to releases for the latest version. https://github.com/mrppa/uniquegen/releases
 
 ## Usage
 
