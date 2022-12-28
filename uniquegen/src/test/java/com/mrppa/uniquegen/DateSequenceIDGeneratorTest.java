@@ -5,11 +5,17 @@ import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
 public class DateSequenceIDGeneratorTest extends BaseIDGeneratorTest {
     @Override
     IDGenerator createIDGenerator() {
-        return new DateSequenceIDGenerator("inst1");
+        IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                .add(DateSequenceIDGenerator.CONTEXT_INSTANCE_ID, "inst1")
+                .build();
+        return new DateSequenceIDGenerator(idGeneratorContext);
     }
 
     @Override
     void createIDGeneratorWithExtraLongInstanceId() {
-        new DateSequenceIDGenerator("extraLongInstanceId");
+        IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                .add(DateSequenceIDGenerator.CONTEXT_INSTANCE_ID, "extraLongInstanceId")
+                .build();
+        new DateSequenceIDGenerator(idGeneratorContext);
     }
 }

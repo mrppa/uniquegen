@@ -1,5 +1,12 @@
 package com.mrppa.uniquegen;
 
-public interface IDGenerator {
-    String generateId();
+public abstract class IDGenerator {
+
+    IDGeneratorContext idGeneratorContext;
+
+    public IDGenerator(IDGeneratorContext idGeneratorContext){
+        this.idGeneratorContext=idGeneratorContext;
+    }
+
+    public abstract String generateId();
 }
