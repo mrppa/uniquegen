@@ -17,19 +17,39 @@ public class IDGeneratorContext {
         this.contextVariables.putAll(contextVariables);
     }
 
-
+    /**
+     * Add variable to context
+     *
+     * @param key   variable name
+     * @param value value
+     */
     public void addToContext(String key, Object value) {
         contextVariables.put(key, value);
     }
 
+    /**
+     * Get variable from the context
+     *
+     * @param key          variable name
+     * @param type         expected class
+     * @param defaultValue default value
+     * @param <T>
+     * @return the variable if exists. Otherwise, return the default value
+     */
     public <T> T getFromContext(String key, Class<T> type, T defaultValue) {
         Object value = contextVariables.get(key);
         if (type.isInstance(value)) {
-            return (T) value;
+            return type.cast(value);
         }
         return defaultValue;
     }
 
+    /**
+     * Validate whether context contains all expected variables
+     *
+     * @param keys expected context variable names
+     * @return true if the context contains all expected. False otherwise
+     */
     public boolean checkVariableAvailability(String... keys) {
         boolean hasAllKeys = true;
         for (String key : keys) {

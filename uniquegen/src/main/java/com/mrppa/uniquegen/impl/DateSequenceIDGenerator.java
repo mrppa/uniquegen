@@ -9,8 +9,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * <p>
  * Generate unique id 29 digits.<br></br>
  * <code>[Date in format yyyyMMddHHmmssSSS - 17 digits][6 digit sequence][6 digit instance id]</code>
+ * </p>
+ * <ul>Optional Fields
+ *     <li>INSTANCE_ID - Instance Id. Default to 000000 when not provided</li>
+ * </ul>
  */
 public class DateSequenceIDGenerator extends IDGenerator {
     public static final String CONTEXT_INSTANCE_ID = "INSTANCE_ID";

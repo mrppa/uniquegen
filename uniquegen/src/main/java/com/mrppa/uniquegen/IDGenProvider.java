@@ -2,21 +2,29 @@ package com.mrppa.uniquegen;
 
 import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class IDGenProvider {
 
-    private static final Map<GenerateType, IDGenerator> generatorMap = new HashMap<>();
-
+    /**
+     * Get the IDGenerator by type
+     *
+     * @param generateType       ID generator type
+     * @param idGeneratorContext context with necessary inputs for each implementation
+     * @return IDGenerator
+     */
     public static synchronized IDGenerator getGenerator(GenerateType generateType,
                                                         IDGeneratorContext idGeneratorContext) {
-        IDGenerator idGenerator = generatorMap.get(generateType);
-        if (idGenerator == null) {
-            idGenerator = initiateGenerator(generateType, idGeneratorContext);
-            generatorMap.put(generateType, idGenerator);
-        }
-        return idGenerator;
+        return initiateGenerator(generateType, idGeneratorContext);
+    }
+
+    /**
+     * Get the IDGenerator by type with empty context. May not work with some implementations
+     *
+     * @param generateType generator type
+     * @return IDGenerator
+     */
+    public static synchronized IDGenerator getGenerator(GenerateType generateType) {
+        return getGenerator(generateType, new ContextBuilder().build());
+
     }
 
     private static IDGenerator initiateGenerator(GenerateType generateType, IDGeneratorContext idGeneratorContext) {
