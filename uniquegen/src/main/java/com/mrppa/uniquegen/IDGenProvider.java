@@ -2,6 +2,7 @@ package com.mrppa.uniquegen;
 
 import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
 import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
+import com.mrppa.uniquegen.impl.JDBCTableSequenceIDGenerator;
 
 public class IDGenProvider {
 
@@ -33,6 +34,8 @@ public class IDGenProvider {
             return new DateSequenceIDGenerator(idGeneratorContext);
         } else if (GenerateType.JDBC_SEQUENCE_BASED.equals(generateType)) {
             return new JDBCSequenceIDGenerator(idGeneratorContext);
+        } else if (GenerateType.JDBC_TABLE_SEQUENCE_BASED.equals(generateType)) {
+            return new JDBCTableSequenceIDGenerator(idGeneratorContext);
         }
         throw new RuntimeException("Generation type not recognized");
     }
