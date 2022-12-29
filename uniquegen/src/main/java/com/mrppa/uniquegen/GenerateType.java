@@ -9,5 +9,10 @@ public enum GenerateType {
     /**
      * Implementation in @see com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator
      */
-    JDBC_SEQUENCE_BASED
+    JDBC_SEQUENCE_BASED,
+
+    /**
+     * Implementation in @see com.mrppa.uniquegen.impl.JDBCTableSequenceIDGenerator
+     */
+    JDBC_TABLE_SEQUENCE_BASED
 }

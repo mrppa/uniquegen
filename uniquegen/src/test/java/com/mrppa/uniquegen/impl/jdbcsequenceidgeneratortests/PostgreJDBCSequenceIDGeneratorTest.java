@@ -1,16 +1,15 @@
 package com.mrppa.uniquegen.impl.jdbcsequenceidgeneratortests;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
+import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class PostgreJDBCSequenceIDGeneratorTest extends H2JDBCSequenceIDGeneratorTest {
-
-    @BeforeAll
-    void init() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:tc:postgresql:9.6.8:///databasename", "admin", "");
+    DataSource getDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:tc:postgresql:9.6.8:///databasename");
+        dataSource.setUsername("admin");
+        dataSource.setPassword("");
+        return dataSource;
     }
 }

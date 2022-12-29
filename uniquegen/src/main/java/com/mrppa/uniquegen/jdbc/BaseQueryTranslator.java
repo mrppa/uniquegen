@@ -37,4 +37,35 @@ public class BaseQueryTranslator {
     public String generateSequenceNextValScript(String sequenceName) {
         return String.format("SELECT nextval('%s')", sequenceName);
     }
+
+    public String generateCreateSequenceTableScript() {
+        return String.format("""
+                        CREATE TABLE IF NOT EXISTS %s (
+                            sequence_name varchar(30) NOT NULL,
+                            next_val varchar(20) NOT NULL,
+                            PRIMARY KEY (sequence_name)
+                        );"""
+                , "uniquegen_sequence");
+    }
+
+    public String generateInsertRecordToSequenceTableScript(String sequenceName) {
+        return String.format("""
+                        INSERT INTO %s (sequence_name, next_val) VALUES ('%s','%s');"""
+                , "uniquegen_sequence", sequenceName, "1");
+    }
+
+    public String generateFetchTableRecordSequenceValue(boolean lockRecord) {
+        String lockStatement = lockRecord ? " FOR UPDATE " : "";
+        return String.format("""
+                        SELECT sequence_name,next_val from %s WHERE sequence_name = ? %s
+                        """
+                , "uniquegen_sequence", lockStatement);
+    }
+
+    public String generateUpdateTableRecordSequenceValue() {
+        return String.format("""
+                        UPDATE %s SET next_val=? WHERE sequence_name = ?
+                        """
+                , "uniquegen_sequence");
+    }
 }

@@ -115,7 +115,7 @@ sample id
 #### Example usage
 ```
 final IDGeneratorContext idGeneratorContext = new ContextBuilder()
-                .add(DateSequenceIDGenerator.JDBC_CONNECTION, connection)
+                .add(DateSequenceIDGenerator.JDBC_DATASOURCE, datasource)
                 .add(DateSequenceIDGenerator.SEQUENCE_NAME, "test_sequence")
                 .build();
 
@@ -124,15 +124,57 @@ final IDGeneratorContext idGeneratorContext = new ContextBuilder()
 ```
 
 #### Context variables
-| Variable        | Desc                                                      | Data Type           | Mandatory                            |
-|-----------------|-----------------------------------------------------------|---------------------|--------------------------------------|
-| JDBC_CONNECTION | JDBC connection object                                    | java.sql.Connection | Yes                                  |
-| SEQUENCE_NAME   | DB sequence name compatible with JDBC naming conventions  | String              | No. Value default to uniquegen_jdbc  |
+| Variable        | Desc                                                     | Data Type             | Mandatory                            |
+|-----------------|----------------------------------------------------------|-----------------------|--------------------------------------|
+| JDBC_DATASOURCE | JDBC datasource object                                   | javax.sql.DataSource  | Yes                                  |
+| SEQUENCE_NAME   | DB sequence name compatible with JDBC naming conventions | String                | No. Value default to uniquegen_jdbc  |
 
 #### Supported databases
 - PostgreSQL
 - MariaDB
 - H2
+
+### JDBC_TABLE_SEQUENCE_BASED
+
+Generate ids backed by JDBC table . Length is 20 digits
+
+#### Format
+```
+[Sequence]
+```
+
+```Sequence``` - sequence number . 20 digits left padded. 
+
+
+sample id
+```
+00000000000000000001
+```
+
+#### Example usage
+```
+final IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                .add(JDBCTableSequenceIDGenerator.JDBC_DATASOURCE, dataSource)
+                .add(JDBCTableSequenceIDGenerator.SEQUENCE_NAME, "test_Sequence")
+                .add(JDBCTableSequenceIDGenerator.CACHE_SIZE, 1000)
+                .build();
+
+ final IDGenerator idGenerator = IDGenProvider.getGenerator(GenerateType.JDBC_TABLE_SEQUENCE_BASED, idGeneratorContext);
+ String generatedId = idGenerator.generateId(); 
+```
+
+#### Context variables
+| Variable        | Desc                                                | Data Type            | Mandatory                          |
+|-----------------|-----------------------------------------------------|----------------------|------------------------------------|
+| JDBC_DATASOURCE | JDBC datasource object                              | javax.sql.DataSource | Yes                                |
+| SEQUENCE_NAME   | Sequence name. Maximum 30 characters allowed        | String               | No. Value default to uniquegen_seq |
+| CACHE_SIZE      | Amount of records to be fetched in one time from DB | Integer              | No. Value default to 100           |
+
+#### Supported databases
+- PostgreSQL
+- MariaDB
+- H2
+- MySql
 
 ## Development/Extention Guideline
 - Checkout the repository and open the project with the ide

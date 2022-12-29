@@ -8,7 +8,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class BaseIDGeneratorTest {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -20,15 +21,12 @@ public abstract class BaseIDGeneratorTest {
     void successPath() {
         logger.info("Testing success path");
         IDGenerator idGenerator = createIDGenerator();
+        for (int i = 0; i < 100; i++) {
+            String generatedId = idGenerator.generateId();
+            logger.info("Generated ID:" + generatedId);
+            assertNotNull(generatedId);
+        }
 
-        String generatedId = idGenerator.generateId();
-        logger.info("Generated ID:" + generatedId);
-
-        String generatedId1 = idGenerator.generateId();
-        logger.info("Generated ID:" + generatedId1);
-
-        assertNotNull(generatedId1);
-        assertNotEquals(generatedId1, generatedId);
     }
 
     @Test
