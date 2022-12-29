@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class BaseIDGeneratorTest {
+public abstract class BaseIDGeneratorTest {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 
-    abstract IDGenerator createIDGenerator();
+    public abstract IDGenerator createIDGenerator();
 
     @Test
     void successPath() {
@@ -34,7 +34,7 @@ abstract class BaseIDGeneratorTest {
     @Test
     void concurrentTest() throws InterruptedException {
         logger.info("Testing concurrency and uniqueness");
-        int nuOfGenerations = 1000000;
+        int nuOfGenerations = 100000;
         List<String> generatedIds = Collections.synchronizedList(new ArrayList<>());
         IDGenerator idGenerator = createIDGenerator();
         Runnable generateRun = () -> {
@@ -46,7 +46,8 @@ abstract class BaseIDGeneratorTest {
             executor.execute(generateRun);
         }
         executor.shutdown();
-        executor.awaitTermination(60, TimeUnit.SECONDS);
+        //noinspection ResultOfMethodCallIgnored
+        executor.awaitTermination(1, TimeUnit.HOURS);
         assertEquals(nuOfGenerations, generatedIds.size());
         Set<String> generatedIdSet = new HashSet<>(generatedIds);
         assertEquals(generatedIds.size(), generatedIdSet.size());

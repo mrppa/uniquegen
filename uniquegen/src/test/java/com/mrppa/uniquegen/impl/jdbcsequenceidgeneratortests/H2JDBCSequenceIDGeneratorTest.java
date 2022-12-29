@@ -1,23 +1,27 @@
-package com.mrppa.uniquegen;
+package com.mrppa.uniquegen.impl.jdbcsequenceidgeneratortests;
 
+import com.mrppa.uniquegen.BaseIDGeneratorTest;
+import com.mrppa.uniquegen.ContextBuilder;
+import com.mrppa.uniquegen.IDGenerator;
+import com.mrppa.uniquegen.IDGeneratorContext;
 import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
-public class JDBCSequenceIDGeneratorTest extends BaseIDGeneratorTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class H2JDBCSequenceIDGeneratorTest extends BaseIDGeneratorTest {
 
-    private static Connection connection;
+    Connection connection;
 
     @BeforeAll
-    static void init() throws ClassNotFoundException, SQLException {
-        Class.forName("org.h2.Driver");
-        connection = DriverManager.getConnection("jdbc:h2:mem:test;MODE=postgresql", "sa", "");
+    void init() throws Exception {
+        connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "");
     }
 
     @Test
@@ -26,7 +30,7 @@ public class JDBCSequenceIDGeneratorTest extends BaseIDGeneratorTest {
     }
 
     @Override
-    IDGenerator createIDGenerator() {
+    public IDGenerator createIDGenerator() {
         IDGeneratorContext idGeneratorContext = new ContextBuilder()
                 .add(JDBCSequenceIDGenerator.JDBC_CONNECTION, connection)
                 .add(JDBCSequenceIDGenerator.SEQUENCE_NAME, "test_Sequence")

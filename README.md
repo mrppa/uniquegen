@@ -29,28 +29,38 @@ Maven and more
 
 Syntex
 ```
- final IDGenerator idGenerator = IDGenProvider.getGenerator(<IDProviderType>, <InstanceId>);
+final IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                ...
+                .build();
+                
+ final IDGenerator idGenerator = IDGenProvider.getGenerator(<IDProviderType>, idGeneratorContext);
  String generatedId = idGenerator.generateId();
 ```
 
 example
 ```
- final IDGenerator idGenerator = IDGenProvider.getGenerator(GenerateType.DATE_SEQUENCE_BASED, 'INS001');
+final IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                .add(DateSequenceIDGenerator.CONTEXT_INSTANCE_ID, "inst1")
+                .build();
+
+ final IDGenerator idGenerator = IDGenProvider.getGenerator(GenerateType.DATE_SEQUENCE_BASED, idGeneratorContext);
  String generatedId = idGenerator.generateId(); 
 ```
 
 ```IDProviderType``` - Type of the id provider
 
-```InstanceId``` - Instance Id . A String with maximum 6 characters in length
+```idGeneratorContext ``` - Context with required variables for each type
 
+Refer to each ID Provider types for required context variables
 
 ## ID provider type
 
 ### DATE_SEQUENCE_BASED
 
-Generate distributed id based on the instance id, date and a running sequence
+Generate distributed id based on the instance id, date and a running sequence. 
+Length is 29 digits
 
-Format
+#### Format
 ```
 [Date][Sequence][Instance id]
 ```
@@ -62,11 +72,67 @@ Format
 ```Instance id``` - Instance Id left padded . 6 digits
 
 
-example
+sample id
 ```
 202212280002261240000010inst1
 ```
 
+#### Example usage
+```
+final IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                .add(DateSequenceIDGenerator.CONTEXT_INSTANCE_ID, "inst1")
+                .build();
+
+ final IDGenerator idGenerator = IDGenProvider.getGenerator(GenerateType.DATE_SEQUENCE_BASED, idGeneratorContext);
+ String generatedId = idGenerator.generateId(); 
+```
+
+#### Context variables
+| Variable      |Desc                       | Data type | Mandatory                 |
+|---------------|---------------------------|-----------|---------------------------|
+| INSTANCE_ID   |Instance id of the service | String    | No. Default set to 000000 |
+
+
+### JDBC_SEQUENCE_BASED
+
+Generate sequence backed by JDBC sequences . Length is 24 digits
+
+#### Format
+```
+[Date][Sequence]
+```
+
+```Date``` - Date formatted in yyyyMMddHHmmss . 14 digits
+
+```Sequence``` - database sequence number . 10 digits left padded. Recycled based on the database 
+
+
+sample id
+```
+202212291707590000000001
+```
+
+#### Example usage
+```
+final IDGeneratorContext idGeneratorContext = new ContextBuilder()
+                .add(DateSequenceIDGenerator.JDBC_CONNECTION, connection)
+                .add(DateSequenceIDGenerator.SEQUENCE_NAME, "test_sequence")
+                .build();
+
+ final IDGenerator idGenerator = IDGenProvider.getGenerator(GenerateType.JDBC_SEQUENCE_BASED, idGeneratorContext);
+ String generatedId = idGenerator.generateId(); 
+```
+
+#### Context variables
+| Variable        | Desc                                                      | Data Type           | Mandatory                            |
+|-----------------|-----------------------------------------------------------|---------------------|--------------------------------------|
+| JDBC_CONNECTION | JDBC connection object                                    | java.sql.Connection | Yes                                  |
+| SEQUENCE_NAME   | DB sequence name compatible with JDBC naming conventions  | String              | No. Value default to uniquegen_jdbc  |
+
+#### Supported databases
+- PostgreSQL
+- MariaDB
+- H2
 
 ## Development/Extention Guideline
 - Checkout the repository and open the project with the ide
@@ -86,3 +152,5 @@ Factory to return the IDGenerator implementation by GenerateType
 #### BaseIDGeneratorTest
 Base unit test to for each IDGenerator implementation
 
+#### IDGeneratorContext
+Hold the context for each generators

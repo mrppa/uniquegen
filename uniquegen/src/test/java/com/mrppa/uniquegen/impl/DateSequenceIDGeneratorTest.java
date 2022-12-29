@@ -1,13 +1,16 @@
-package com.mrppa.uniquegen;
+package com.mrppa.uniquegen.impl;
 
-import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
+import com.mrppa.uniquegen.BaseIDGeneratorTest;
+import com.mrppa.uniquegen.ContextBuilder;
+import com.mrppa.uniquegen.IDGenerator;
+import com.mrppa.uniquegen.IDGeneratorContext;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class DateSequenceIDGeneratorTest extends BaseIDGeneratorTest {
     @Override
-    IDGenerator createIDGenerator() {
+    public IDGenerator createIDGenerator() {
         IDGeneratorContext idGeneratorContext = new ContextBuilder()
                 .add(DateSequenceIDGenerator.CONTEXT_INSTANCE_ID, "inst1")
                 .build();
