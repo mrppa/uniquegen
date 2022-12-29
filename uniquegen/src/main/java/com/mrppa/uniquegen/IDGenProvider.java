@@ -1,26 +1,38 @@
 package com.mrppa.uniquegen;
 
 import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
 
 public class IDGenProvider {
 
-    private static final Map<GenerateType, IDGenerator> generatorMap = new HashMap<>();
-
-    public static synchronized IDGenerator getGenerator(GenerateType generateType, String instanceId) {
-        IDGenerator idGenerator = generatorMap.get(generateType);
-        if (idGenerator == null) {
-            idGenerator = initiateGenerator(generateType, instanceId);
-            generatorMap.put(generateType, idGenerator);
-        }
-        return idGenerator;
+    /**
+     * Get the IDGenerator by type
+     *
+     * @param generateType       ID generator type
+     * @param idGeneratorContext context with necessary inputs for each implementation
+     * @return IDGenerator
+     */
+    public static synchronized IDGenerator getGenerator(GenerateType generateType,
+                                                        IDGeneratorContext idGeneratorContext) {
+        return initiateGenerator(generateType, idGeneratorContext);
     }
 
-    private static IDGenerator initiateGenerator(GenerateType generateType, String instanceId) {
+    /**
+     * Get the IDGenerator by type with empty context. May not work with some implementations
+     *
+     * @param generateType generator type
+     * @return IDGenerator
+     */
+    public static synchronized IDGenerator getGenerator(GenerateType generateType) {
+        return getGenerator(generateType, new ContextBuilder().build());
+
+    }
+
+    private static IDGenerator initiateGenerator(GenerateType generateType, IDGeneratorContext idGeneratorContext) {
         if (GenerateType.DATE_SEQUENCE_BASED.equals(generateType)) {
-            return new DateSequenceIDGenerator(instanceId);
+            return new DateSequenceIDGenerator(idGeneratorContext);
+        } else if (GenerateType.JDBC_SEQUENCE_BASED.equals(generateType)) {
+            return new JDBCSequenceIDGenerator(idGeneratorContext);
         }
         throw new RuntimeException("Generation type not recognized");
     }

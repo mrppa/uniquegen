@@ -1,6 +1,7 @@
 package com.mrppa.uniquegen.impl;
 
 import com.mrppa.uniquegen.IDGenerator;
+import com.mrppa.uniquegen.IDGeneratorContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
@@ -8,22 +9,28 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * <p>
  * Generate unique id 29 digits.<br></br>
  * <code>[Date in format yyyyMMddHHmmssSSS - 17 digits][6 digit sequence][6 digit instance id]</code>
+ * </p>
+ * <ul>Optional Fields
+ *     <li>INSTANCE_ID - Instance Id. Default to 000000 when not provided</li>
+ * </ul>
  */
-public class DateSequenceIDGenerator implements IDGenerator {
+public class DateSequenceIDGenerator extends IDGenerator {
+    public static final String CONTEXT_INSTANCE_ID = "INSTANCE_ID";
+
     private final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
-    private final String instanceId;
+    private String instanceId;
     private final AtomicInteger sequence = new AtomicInteger();
 
-    public DateSequenceIDGenerator(String instanceId) {
-        if (instanceId == null) {
-            instanceId = "";
-        }
+    public DateSequenceIDGenerator(IDGeneratorContext idGeneratorContext) {
+        super(idGeneratorContext);
+        instanceId = idGeneratorContext.getFromContext(CONTEXT_INSTANCE_ID, String.class, "000000");
         if (instanceId.length() > 6) {
             throw new RuntimeException("Instance Id length is more than 6 characters");
         }
-        this.instanceId = StringUtils.leftPad(instanceId, 6, "0");
+        instanceId = StringUtils.leftPad(instanceId, 6, "0");
         sequence.set(0);
     }
 
