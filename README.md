@@ -115,7 +115,7 @@ sample id
 #### Example usage
 ```
 final IDGeneratorContext idGeneratorContext = new ContextBuilder()
-                .add(DateSequenceIDGenerator.JDBC_CONNECTION, connection)
+                .add(DateSequenceIDGenerator.JDBC_DATASOURCE, datasource)
                 .add(DateSequenceIDGenerator.SEQUENCE_NAME, "test_sequence")
                 .build();
 
@@ -124,10 +124,10 @@ final IDGeneratorContext idGeneratorContext = new ContextBuilder()
 ```
 
 #### Context variables
-| Variable        | Desc                                                      | Data Type           | Mandatory                            |
-|-----------------|-----------------------------------------------------------|---------------------|--------------------------------------|
-| JDBC_CONNECTION | JDBC connection object                                    | java.sql.Connection | Yes                                  |
-| SEQUENCE_NAME   | DB sequence name compatible with JDBC naming conventions  | String              | No. Value default to uniquegen_jdbc  |
+| Variable        | Desc                                                     | Data Type             | Mandatory                            |
+|-----------------|----------------------------------------------------------|-----------------------|--------------------------------------|
+| JDBC_DATASOURCE | JDBC datasource object                                   | javax.sql.DataSource  | Yes                                  |
+| SEQUENCE_NAME   | DB sequence name compatible with JDBC naming conventions | String                | No. Value default to uniquegen_jdbc  |
 
 #### Supported databases
 - PostgreSQL

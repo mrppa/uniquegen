@@ -2,28 +2,27 @@ package com.mrppa.uniquegen.impl.jdbcsequenceidgeneratortests;
 
 import com.mrppa.uniquegen.ContextBuilder;
 import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
-import org.junit.jupiter.api.BeforeAll;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.sql.DataSource;
 
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
 public class MySQLJDBCSequenceIDGeneratorTest {
 
-    private static Connection connection;
-
-    @BeforeAll
-    static void init() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:tc:mysql:5.7.34:///databasename", "root", "");
+    DataSource getDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:tc:mysql:5.7.34:///databasename");
+        dataSource.setUsername("root");
+        dataSource.setPassword("");
+        return dataSource;
     }
 
     @Test
     void throwUnsupportedExceptionWhenTryingToInitiate() {
         assertThrowsExactly(UnsupportedOperationException.class, () -> new JDBCSequenceIDGenerator(new ContextBuilder()
-                .add(JDBCSequenceIDGenerator.JDBC_CONNECTION, connection)
+                .add(JDBCSequenceIDGenerator.JDBC_DATASOURCE, getDataSource())
                 .build()));
     }
 }

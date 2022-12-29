@@ -1,15 +1,15 @@
 package com.mrppa.uniquegen.impl.jdbcsequenceidgeneratortests;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
+import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.DriverManager;
+import javax.sql.DataSource;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MariaDBJDBCSequenceIDGeneratorTest extends H2JDBCSequenceIDGeneratorTest {
-
-    @BeforeAll
-    void init() throws Exception {
-        connection = DriverManager.getConnection("jdbc:tc:mariadb:10.5.5:///databasename", "admin", "");
+    DataSource getDataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:tc:mariadb:10.5.5:///databasename");
+        dataSource.setUsername("admin");
+        dataSource.setPassword("");
+        return dataSource;
     }
 }
