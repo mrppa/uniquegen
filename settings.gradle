@@ -9,3 +9,4 @@
 
 rootProject.name = 'uniquegen'
 include('uniquegen')
+include('uniquegenserver')
