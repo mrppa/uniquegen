@@ -6,7 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 /**
  * <p>
@@ -35,10 +37,13 @@ public class DateSequenceIDGenerator extends IDGenerator {
     }
 
     @Override
-    public String generateId() {
+    public List<String> generateIds(int numberOfIds) {
         String dateComponent = LocalDateTime.now().format(dateFormat);
-        String sequenceComponent = StringUtils.leftPad(
-                Integer.toString(sequence.updateAndGet(n -> n >= 999999 ? 0 : n + 1)), 6, "0");
-        return String.format("%s%s%s", dateComponent, sequenceComponent, instanceId);
+        return IntStream.range(0, numberOfIds).mapToObj(i ->
+        {
+            String sequenceComponent = StringUtils.leftPad(
+                    Integer.toString(sequence.updateAndGet(n -> n >= 999999 ? 0 : n + 1)), 6, "0");
+            return String.format("%s%s%s", dateComponent, sequenceComponent, instanceId);
+        }).toList();
     }
 }

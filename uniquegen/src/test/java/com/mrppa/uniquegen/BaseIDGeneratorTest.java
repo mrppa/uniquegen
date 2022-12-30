@@ -18,15 +18,29 @@ public abstract class BaseIDGeneratorTest {
     public abstract IDGenerator createIDGenerator();
 
     @Test
-    void successPath() {
-        logger.info("Testing success path");
+    void testGenerateId() {
+        logger.info("Testing generateId");
         IDGenerator idGenerator = createIDGenerator();
         for (int i = 0; i < 100; i++) {
             String generatedId = idGenerator.generateId();
             logger.info("Generated ID:" + generatedId);
             assertNotNull(generatedId);
         }
+    }
 
+    @Test
+    void testGenerateIds() {
+        logger.info("Testing generateIds");
+        IDGenerator idGenerator = createIDGenerator();
+        List<String> idList1 = idGenerator.generateIds(10);
+        assertEquals(10, idList1.size());
+        List<String> idList2 = idGenerator.generateIds(15);
+        assertEquals(15, idList2.size());
+
+        Set<String> generatedIdSet = new HashSet<>(idList1);
+        generatedIdSet.addAll(idList2);
+
+        assertEquals(idList1.size(), idList2.size(), generatedIdSet.size());
     }
 
     @Test

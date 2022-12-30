@@ -35,6 +35,7 @@ final IDGeneratorContext idGeneratorContext = new ContextBuilder()
                 
  final IDGenerator idGenerator = IDGenProvider.getGenerator(<IDProviderType>, idGeneratorContext);
  String generatedId = idGenerator.generateId();
+ List<String> generatedIds = idGenerator.generateIds(<required number of ids>);
 ```
 
 example
@@ -45,6 +46,7 @@ final IDGeneratorContext idGeneratorContext = new ContextBuilder()
 
  final IDGenerator idGenerator = IDGenProvider.getGenerator(GenerateType.DATE_SEQUENCE_BASED, idGeneratorContext);
  String generatedId = idGenerator.generateId(); 
+ List<String> generatedIds = idGenerator.generateIds(10);
 ```
 
 ```IDProviderType``` - Type of the id provider

@@ -9,6 +9,8 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class JDBCSequenceIDGenerator extends IDGenerator {
     public static final String JDBC_DATASOURCE = "JDBC_DATASOURCE";
@@ -40,23 +42,24 @@ public class JDBCSequenceIDGenerator extends IDGenerator {
             st.executeUpdate(baseQueryTranslator.generateCreateSequenceScript(sequenceName));
         }
     }
-
+    
     @Override
-    public String generateId() {
+    public List<String> generateIds(int numberOfIds) {
         String dateComponent = LocalDateTime.now().format(dateFormat);
-        String sequenceComponent;
-        try {
-            Integer seqValue = getSequenceFromDB();
-            if (seqValue == null) {
-                throw new RuntimeException("Error in JDBC sequence");
+        return IntStream.range(0, numberOfIds).mapToObj(i ->
+        {
+            String sequenceComponent;
+            try {
+                Integer seqValue = getSequenceFromDB();
+                if (seqValue == null) {
+                    throw new RuntimeException("Error in JDBC sequence");
+                }
+                sequenceComponent = StringUtils.leftPad(seqValue.toString(), 10, "0");
+            } catch (SQLException e) {
+                throw new RuntimeException("Error fetching sequenceNumber from database", e);
             }
-            sequenceComponent = StringUtils.leftPad(seqValue.toString(), 10, "0");
-        } catch (SQLException e) {
-            throw new RuntimeException("Error fetching sequenceNumber from database", e);
-        }
-        return String.format("%s%s", dateComponent, sequenceComponent);
-
-
+            return String.format("%s%s", dateComponent, sequenceComponent);
+        }).toList();
     }
 
     private Integer getSequenceFromDB() throws SQLException {

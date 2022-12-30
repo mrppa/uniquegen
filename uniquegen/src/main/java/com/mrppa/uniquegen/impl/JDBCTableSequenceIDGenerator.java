@@ -15,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
 
 public class JDBCTableSequenceIDGenerator extends IDGenerator {
     private static final Logger logger = Logger.getLogger(JDBCTableSequenceIDGenerator.class.getName());
@@ -67,12 +68,15 @@ public class JDBCTableSequenceIDGenerator extends IDGenerator {
     }
 
     @Override
-    public String generateId() {
-        try {
-            return localIDQueue.poll(60, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("Timeout while retrieving records");
-        }
+    public List<String> generateIds(int numberOfIds) {
+        return IntStream.range(0, numberOfIds).mapToObj(i ->
+        {
+            try {
+                return localIDQueue.poll(60, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Timeout while retrieving records");
+            }
+        }).toList();
     }
 
     private void scheduleDataFetch() {
