@@ -29,9 +29,6 @@ public class DateSequenceIDGenerator extends IDGenerator {
     public DateSequenceIDGenerator(IDGeneratorContext idGeneratorContext) {
         super(idGeneratorContext);
         instanceId = idGeneratorContext.getFromContext(CONTEXT_INSTANCE_ID, String.class, "000000");
-        if (instanceId.length() > 6) {
-            throw new RuntimeException("Instance Id length is more than 6 characters");
-        }
         instanceId = StringUtils.leftPad(instanceId, 6, "0");
         sequence.set(0);
     }

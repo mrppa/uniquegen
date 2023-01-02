@@ -2,6 +2,7 @@ package com.mrppa.uniquegen.impl;
 
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
+import com.mrppa.uniquegen.IDGeneratorException;
 import com.mrppa.uniquegen.jdbc.BaseQueryTranslator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -31,9 +32,6 @@ public class JDBCTableSequenceIDGenerator extends IDGenerator {
 
     public JDBCTableSequenceIDGenerator(IDGeneratorContext idGeneratorContext) {
         super(idGeneratorContext);
-        if (!idGeneratorContext.checkVariableAvailability(JDBC_DATASOURCE)) {
-            throw new RuntimeException(JDBC_DATASOURCE + " Required ");
-        }
         dataSource = idGeneratorContext.getFromContext(JDBC_DATASOURCE, DataSource.class, null);
         sequenceName = idGeneratorContext.getFromContext(SEQUENCE_NAME, String.class, "uniquegen_seq");
         cacheSize = idGeneratorContext.getFromContext(CACHE_SIZE, Integer.class, 100);
@@ -74,7 +72,7 @@ public class JDBCTableSequenceIDGenerator extends IDGenerator {
             try {
                 return localIDQueue.poll(60, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                throw new RuntimeException("Timeout while retrieving records");
+                throw new IDGeneratorException("Timeout while retrieving ids");
             }
         }).toList();
     }

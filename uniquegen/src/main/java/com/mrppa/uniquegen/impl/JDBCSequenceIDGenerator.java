@@ -23,9 +23,6 @@ public class JDBCSequenceIDGenerator extends IDGenerator {
 
     public JDBCSequenceIDGenerator(IDGeneratorContext idGeneratorContext) {
         super(idGeneratorContext);
-        if (!idGeneratorContext.checkVariableAvailability(JDBC_DATASOURCE)) {
-            throw new RuntimeException(JDBC_DATASOURCE + " Required ");
-        }
         dataSource = idGeneratorContext.getFromContext(JDBC_DATASOURCE, DataSource.class, null);
         sequenceName = idGeneratorContext.getFromContext(SEQUENCE_NAME, String.class, "uniquegen_jdbc");
 

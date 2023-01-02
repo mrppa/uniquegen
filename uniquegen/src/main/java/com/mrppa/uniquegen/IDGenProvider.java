@@ -1,10 +1,12 @@
 package com.mrppa.uniquegen;
 
-import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
-import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
-import com.mrppa.uniquegen.impl.JDBCTableSequenceIDGenerator;
+import com.mrppa.uniquegen.model.IDGeneratorDefinition;
+
+import java.util.Optional;
 
 public class IDGenProvider {
+
+    private static final IDGenProvidersRegistry idGenProvidersRegistry = new IDGenProvidersRegistry();
 
     /**
      * Get the IDGenerator by type
@@ -30,13 +32,14 @@ public class IDGenProvider {
     }
 
     private static IDGenerator initiateGenerator(GenerateType generateType, IDGeneratorContext idGeneratorContext) {
-        if (GenerateType.DATE_SEQUENCE_BASED.equals(generateType)) {
-            return new DateSequenceIDGenerator(idGeneratorContext);
-        } else if (GenerateType.JDBC_SEQUENCE_BASED.equals(generateType)) {
-            return new JDBCSequenceIDGenerator(idGeneratorContext);
-        } else if (GenerateType.JDBC_TABLE_SEQUENCE_BASED.equals(generateType)) {
-            return new JDBCTableSequenceIDGenerator(idGeneratorContext);
+        Optional<IDGeneratorDefinition> optionalIDGeneratorDefinition = idGenProvidersRegistry
+                .getIdGeneratorDefinitionByGenerateType(generateType);
+        if (optionalIDGeneratorDefinition.isEmpty()) {
+            throw new RuntimeException("Generation type not registered");
         }
-        throw new RuntimeException("Generation type not recognized");
+        IDGeneratorDefinition idGeneratorDefinition = optionalIDGeneratorDefinition.get();
+        idGeneratorDefinition.validateContext(idGeneratorContext);
+        return idGeneratorDefinition.instanciateIDGenerator(idGeneratorContext);
     }
+
 }
