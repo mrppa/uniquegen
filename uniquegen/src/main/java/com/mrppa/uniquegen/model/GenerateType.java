@@ -1,4 +1,4 @@
-package com.mrppa.uniquegen;
+package com.mrppa.uniquegen.model;
 
 public enum GenerateType {
     /**

@@ -1,6 +1,8 @@
 package com.mrppa.uniquegen;
 
-import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
+import com.mrppa.uniquegen.exception.IDGeneratorException;
+import com.mrppa.uniquegen.generators.datesequenceidgenerator.service.DateSequenceIDGenerator;
+import com.mrppa.uniquegen.model.GenerateType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -20,7 +22,7 @@ class IDGenProviderTest {
                 .add(DateSequenceIDGenerator.CONTEXT_INSTANCE_ID, "inst1")
                 .build();
 
-        assertThrowsExactly(RuntimeException.class, () -> IDGenProvider.getGenerator(null, idGeneratorContext));
+        assertThrowsExactly(IDGeneratorException.class, () -> IDGenProvider.getGenerator(null, idGeneratorContext));
     }
 
 }

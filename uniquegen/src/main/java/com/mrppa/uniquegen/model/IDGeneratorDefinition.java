@@ -1,9 +1,8 @@
 package com.mrppa.uniquegen.model;
 
-import com.mrppa.uniquegen.GenerateType;
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
-import com.mrppa.uniquegen.IDGeneratorException;
+import com.mrppa.uniquegen.exception.IDGeneratorException;
 
 import java.util.List;
 

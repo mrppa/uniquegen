@@ -1,4 +1,4 @@
-package com.mrppa.uniquegen.impl.jdbcsequenceidgeneratortests;
+package com.mrppa.uniquegen.generators.jdbcsequenceidgenerator;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 

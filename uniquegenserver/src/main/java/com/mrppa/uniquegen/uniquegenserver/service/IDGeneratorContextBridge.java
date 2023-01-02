@@ -1,9 +1,9 @@
 package com.mrppa.uniquegen.uniquegenserver.service;
 
-import com.mrppa.uniquegen.GenerateType;
-import com.mrppa.uniquegen.IDGenProvidersRegistry;
+import com.mrppa.uniquegen.model.GenerateType;
+import com.mrppa.uniquegen.exception.IDGenProvidersRegistry;
 import com.mrppa.uniquegen.IDGeneratorContext;
-import com.mrppa.uniquegen.IDGeneratorException;
+import com.mrppa.uniquegen.exception.IDGeneratorException;
 import com.mrppa.uniquegen.model.ContextVariableFieldDef;
 import com.mrppa.uniquegen.model.IDGeneratorDefinition;
 import org.slf4j.Logger;

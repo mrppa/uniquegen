@@ -1,5 +1,6 @@
-package com.mrppa.uniquegen.impl;
+package com.mrppa.uniquegen.generators.jdbcsequenceidgenerator.service;
 
+import com.mrppa.uniquegen.model.GenerateType;
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
 import com.mrppa.uniquegen.jdbc.BaseQueryTranslator;
@@ -34,12 +35,17 @@ public class JDBCSequenceIDGenerator extends IDGenerator {
         }
     }
 
+    @Override
+    public GenerateType getGenerateType() {
+        return GenerateType.JDBC_SEQUENCE_BASED;
+    }
+
     private void initSequence(Connection connection) throws SQLException {
         try (Statement st = connection.createStatement()) {
             st.executeUpdate(baseQueryTranslator.generateCreateSequenceScript(sequenceName));
         }
     }
-    
+
     @Override
     public List<String> generateIds(int numberOfIds) {
         String dateComponent = LocalDateTime.now().format(dateFormat);

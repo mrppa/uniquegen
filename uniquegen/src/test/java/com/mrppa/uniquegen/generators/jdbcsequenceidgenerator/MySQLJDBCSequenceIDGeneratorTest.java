@@ -1,7 +1,7 @@
-package com.mrppa.uniquegen.impl.jdbcsequenceidgeneratortests;
+package com.mrppa.uniquegen.generators.jdbcsequenceidgenerator;
 
 import com.mrppa.uniquegen.ContextBuilder;
-import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
+import com.mrppa.uniquegen.generators.jdbcsequenceidgenerator.service.JDBCSequenceIDGenerator;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.Test;
 

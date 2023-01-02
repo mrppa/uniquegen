@@ -1,12 +1,15 @@
 package com.mrppa.uniquegen;
 
+import com.mrppa.uniquegen.exception.IDGeneratorException;
+import com.mrppa.uniquegen.generators.GeneratorRegistry;
+import com.mrppa.uniquegen.model.GenerateType;
 import com.mrppa.uniquegen.model.IDGeneratorDefinition;
 
 import java.util.Optional;
 
 public class IDGenProvider {
 
-    private static final IDGenProvidersRegistry idGenProvidersRegistry = new IDGenProvidersRegistry();
+    private static final GeneratorRegistry generatorRegistry = new GeneratorRegistry();
 
     /**
      * Get the IDGenerator by type
@@ -32,13 +35,14 @@ public class IDGenProvider {
     }
 
     private static IDGenerator initiateGenerator(GenerateType generateType, IDGeneratorContext idGeneratorContext) {
-        Optional<IDGeneratorDefinition> optionalIDGeneratorDefinition = idGenProvidersRegistry
-                .getIdGeneratorDefinitionByGenerateType(generateType);
+        Optional<IDGeneratorDefinition> optionalIDGeneratorDefinition = generatorRegistry
+                .getDefinitionByType(generateType);
         if (optionalIDGeneratorDefinition.isEmpty()) {
-            throw new RuntimeException("Generation type not registered");
+            throw new IDGeneratorException("Generation type not registered");
         }
         IDGeneratorDefinition idGeneratorDefinition = optionalIDGeneratorDefinition.get();
         idGeneratorDefinition.validateContext(idGeneratorContext);
+
         return idGeneratorDefinition.instanciateIDGenerator(idGeneratorContext);
     }
 

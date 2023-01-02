@@ -1,9 +1,10 @@
-package com.mrppa.uniquegen.impl;
+package com.mrppa.uniquegen.generators;
 
 import com.mrppa.uniquegen.BaseIDGeneratorTest;
 import com.mrppa.uniquegen.ContextBuilder;
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
+import com.mrppa.uniquegen.generators.datesequenceidgenerator.service.DateSequenceIDGenerator;
 
 public class DateSequenceIDGeneratorTest extends BaseIDGeneratorTest {
     @Override

@@ -1,4 +1,4 @@
-package com.mrppa.uniquegen;
+package com.mrppa.uniquegen.exception;
 
 public class IDGeneratorException extends RuntimeException {
     public IDGeneratorException(String errorMsg) {

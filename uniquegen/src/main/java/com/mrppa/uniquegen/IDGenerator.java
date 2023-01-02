@@ -1,5 +1,7 @@
 package com.mrppa.uniquegen;
 
+import com.mrppa.uniquegen.model.GenerateType;
+
 import java.util.List;
 
 public abstract class IDGenerator {
@@ -13,6 +15,13 @@ public abstract class IDGenerator {
     public IDGenerator(IDGeneratorContext idGeneratorContext) {
         this.idGeneratorContext = idGeneratorContext;
     }
+
+    /**
+     * Retrieve Generate type
+     *
+     * @return generate type
+     */
+    public abstract GenerateType getGenerateType();
 
     /**
      * Generate Id

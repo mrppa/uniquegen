@@ -1,5 +1,6 @@
-package com.mrppa.uniquegen.impl;
+package com.mrppa.uniquegen.generators.datesequenceidgenerator.service;
 
+import com.mrppa.uniquegen.model.GenerateType;
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,11 @@ public class DateSequenceIDGenerator extends IDGenerator {
         instanceId = idGeneratorContext.getFromContext(CONTEXT_INSTANCE_ID, String.class, "000000");
         instanceId = StringUtils.leftPad(instanceId, 6, "0");
         sequence.set(0);
+    }
+
+    @Override
+    public GenerateType getGenerateType() {
+        return GenerateType.DATE_SEQUENCE_BASED;
     }
 
     @Override

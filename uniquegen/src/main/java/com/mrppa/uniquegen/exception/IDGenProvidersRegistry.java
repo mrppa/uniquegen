@@ -1,8 +1,11 @@
-package com.mrppa.uniquegen;
+package com.mrppa.uniquegen.exception;
 
-import com.mrppa.uniquegen.impl.DateSequenceIDGenerator;
-import com.mrppa.uniquegen.impl.JDBCSequenceIDGenerator;
-import com.mrppa.uniquegen.impl.JDBCTableSequenceIDGenerator;
+import com.mrppa.uniquegen.model.GenerateType;
+import com.mrppa.uniquegen.IDGenerator;
+import com.mrppa.uniquegen.IDGeneratorContext;
+import com.mrppa.uniquegen.generators.datesequenceidgenerator.service.DateSequenceIDGenerator;
+import com.mrppa.uniquegen.generators.jdbcsequenceidgenerator.service.JDBCSequenceIDGenerator;
+import com.mrppa.uniquegen.generators.jdbctablesequenceidgenerator.service.JDBCTableSequenceIDGenerator;
 import com.mrppa.uniquegen.model.ContextVariableFieldDef;
 import com.mrppa.uniquegen.model.IDGeneratorDefinition;
 

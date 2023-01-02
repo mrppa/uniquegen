@@ -1,7 +1,7 @@
 package com.mrppa.uniquegen.uniquegenserver.service;
 
-import com.mrppa.uniquegen.GenerateType;
-import com.mrppa.uniquegen.IDGenProvidersRegistry;
+import com.mrppa.uniquegen.model.GenerateType;
+import com.mrppa.uniquegen.exception.IDGenProvidersRegistry;
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
 import com.mrppa.uniquegen.model.ContextVariableFieldDef;

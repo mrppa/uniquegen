@@ -1,9 +1,10 @@
-package com.mrppa.uniquegen.impl;
+package com.mrppa.uniquegen.generators.jdbctablesequenceidgenerator.service;
 
 import com.mrppa.uniquegen.IDGenerator;
 import com.mrppa.uniquegen.IDGeneratorContext;
-import com.mrppa.uniquegen.IDGeneratorException;
+import com.mrppa.uniquegen.exception.IDGeneratorException;
 import com.mrppa.uniquegen.jdbc.BaseQueryTranslator;
+import com.mrppa.uniquegen.model.GenerateType;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.sql.DataSource;
@@ -48,6 +49,11 @@ public class JDBCTableSequenceIDGenerator extends IDGenerator {
         scheduleDataFetch();
     }
 
+    @Override
+    public GenerateType getGenerateType() {
+        return GenerateType.JDBC_TABLE_SEQUENCE_BASED;
+    }
+
     private void initSequence(Connection connection) throws SQLException {
         try (Statement st = connection.createStatement()) {
             st.executeUpdate(baseQueryTranslator.generateCreateSequenceTableScript());
@@ -83,10 +89,12 @@ public class JDBCTableSequenceIDGenerator extends IDGenerator {
                 try {
                     List<String> fetchedIds = JDBCTableSequenceIDGenerator.this.fetchIdsSequenceFromDB();
                     for (String id : fetchedIds) {
-                        localIDQueue.offer(id);
+                        localIDQueue.offer(id, 365, TimeUnit.DAYS);
                     }
                 } catch (SQLException e) {
                     logger.log(Level.WARNING, "Error fetching data from the database", e);
+                } catch (InterruptedException e) {
+                    logger.log(Level.WARNING, "Timeout while queuing data");
                 }
 
             }
